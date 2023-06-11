@@ -101,10 +101,9 @@ const ChatContent = ({ oldMessages, auth, updateMessages }) => {
             if (message.sender_id && message.receiver_id) {
                 if (message.sender_id === currentSender && message.receiver_id === currentReceiver) {
                     mergedMessage.messages.push(message);
-
                     mergedMessage.messages.push({
                         created_at: "2023-06-11T13:56:58.000000Z",
-                        id: 999,
+                        id: 298,
                         message: "For Testing Only",
                         receiver_id: 1,
                         sender_id: 4,
