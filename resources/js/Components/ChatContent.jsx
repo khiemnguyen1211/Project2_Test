@@ -92,26 +92,18 @@ const ChatContent = ({ oldMessages, auth, updateMessages }) => {
         }
     };
 
-    const transformOldToMerged = () => {
+    const transformOldToMerged1 = () => {
         // old => merged
         let currentSender = null;
         let currentReceiver = null;
-        let mergedMessage = null;
+        let changeMessage = null;
         oldMessages.forEach((message) => {
             if (message.sender_id && message.receiver_id) {
                 if (message.sender_id === currentSender && message.receiver_id === currentReceiver) {
-                    mergedMessage.messages.push(message);
-                    mergedMessage.messages.push({
-                        created_at: "2023-06-11T13:56:58.000000Z",
-                        id: 298,
-                        message: "For Testing Only",
-                        receiver_id: 1,
-                        sender_id: 4,
-                        updated_at: "2023-06-11T13:56:58.000000Z"
-                    });
+                    changeMessage.messages.push(message);
                 } else {
                     // Create a new merged message
-                    mergedMessage = {
+                    changeMessage = {
                         sender_id: message.sender_id,
                         receiver_id: message.receiver_id,
                         sender_name: message.sender ? message.sender.name : '', // Retrieve sender's name
@@ -121,7 +113,7 @@ const ChatContent = ({ oldMessages, auth, updateMessages }) => {
                         messages: [message],
                     };
 
-                    mergedMessages.push(mergedMessage);
+                    mergedMessages.push(changeMessage);
 
                     // Update current sender and receiver
                     currentSender = message.sender_id;
@@ -129,6 +121,38 @@ const ChatContent = ({ oldMessages, auth, updateMessages }) => {
                 }
             }
         });
+    };
+    const transformOldToMerged = () => {
+        const newMergedMessages = [];
+        let currentSender = null;
+        let currentReceiver = null;
+        let changeMessage = null;
+
+        oldMessages.forEach((message) => {
+            if (message.sender_id && message.receiver_id) {
+                if (message.sender_id === currentSender && message.receiver_id === currentReceiver) {
+                    changeMessage.messages.push(message);
+                } else {
+                    // Create a new merged message
+                    changeMessage = {
+                        sender_id: message.sender_id,
+                        receiver_id: message.receiver_id,
+                        sender_name: message.sender ? message.sender.name : '',
+                        sender_avatar: message.sender_avatar,
+                        receiver_name: message.receiver_name,
+                        receiver_avatar: message.receiver_avatar,
+                        messages: [message],
+                    };
+
+                    newMergedMessages.push(changeMessage);
+
+                    // Update current sender and receiver
+                    currentSender = message.sender_id;
+                    currentReceiver = message.receiver_id;
+                }
+            }
+        });
+        setMergedMessages(newMergedMessages);
     };
 
     return (
