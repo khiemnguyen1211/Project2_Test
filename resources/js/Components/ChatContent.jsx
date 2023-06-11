@@ -109,7 +109,7 @@ const ChatContent = ({ oldMessages, auth, updateMessages }) => {
             if (message.sender_id && message.receiver_id) {
                 if (message.sender_id === currentSender && message.receiver_id === currentReceiver) {
                     // console.log({mergedMessages});
-                    mergedMessage.messages.push(message);
+                    // mergedMessage.messages.push(message);
                     // setMergedMessages((prevState) => {
                     //     prevState.messages.push(message);
                     // });
