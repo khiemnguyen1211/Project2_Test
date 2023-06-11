@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import axios from 'axios';
 import echo from "@/Components/echo.jsx";
 import useWebSocket from "react-use-websocket";
@@ -7,10 +7,10 @@ const ChatContent = ({ oldMessages, auth, updateMessages }) => {
     console.log('ChatContent re-render');
     const [newMessage, setNewMessage] = useState('');
     const [mergedMessages, setMergedMessages] = useState([]);
+    const chatContainerRef = useRef(null);
 
     useEffect(() => {
-        transformOldToMerged();
-
+        // transformOldToMerged(); tai sai anh Doan lai call no trong day ?
         // Subscribe to the channel when the component mounts
         const channel = window.Echo.private(`messenger.1.2`);
 
@@ -27,12 +27,12 @@ const ChatContent = ({ oldMessages, auth, updateMessages }) => {
                 updated_at: newMsg.updated_at
             });
         });
-
+        chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
         // Unsubscribe from the channel when the component unmounts
         return () => {
             channel.stopListening('MessageSent');
         };
-    }, []);
+    }, [mergedMessages]);
 
     useEffect(() => {
         transformOldToMerged();
@@ -92,7 +92,7 @@ const ChatContent = ({ oldMessages, auth, updateMessages }) => {
         }
     };
 
-    const transformOldToMerged1 = () => {
+    const transformOldToMerged1= () => {
         // old => merged
         let currentSender = null;
         let currentReceiver = null;
@@ -166,7 +166,7 @@ const ChatContent = ({ oldMessages, auth, updateMessages }) => {
                 </div>
             </div>
             {/* Chat Content */}
-            <div className="p-4 flex-grow bg-gray-100 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 200px)' }}>
+            <div ref={chatContainerRef} className= "p-4 flex-grow bg-gray-100 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 200px)' }}>
                 {mergedMessages.map((mergedMessage, index) => {
                     const isSentByCurrentUser = mergedMessage.sender_id === auth.user.id;
                     const messageContainerClass = isSentByCurrentUser ? 'justify-end' : 'justify-start';
