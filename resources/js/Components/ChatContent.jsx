@@ -7,11 +7,9 @@ const ChatContent = ({ oldMessages, auth, updateMessages }) => {
     console.log('ChatContent re-render');
     const [newMessage, setNewMessage] = useState('');
     const [mergedMessages, setMergedMessages] = useState([]);
-    const [doanTest, setDoanTest] = useState([]);
 
     useEffect(() => {
         transformOldToMerged();
-        setDoanTest(oldMessages);
 
         // Subscribe to the channel when the component mounts
         const channel = window.Echo.private(`messenger.1.2`);
@@ -37,17 +35,11 @@ const ChatContent = ({ oldMessages, auth, updateMessages }) => {
     }, []);
 
     useEffect(() => {
-        console.log("oldMessages changed");
-        console.log({oldMessages});
-        setDoanTest(oldMessages);
-        // old => merged
         transformOldToMerged();
     }, [oldMessages.length]);
 
 
     const receiverId = window.location.pathname.split('/').pop();
-    // const WS_URL = 'ws://127.0.0.1:6001';
-    // const { sendMessage } = useWebSocket(WS_URL);
 
     const formatDate = (timestamp) => {
         const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -108,11 +100,16 @@ const ChatContent = ({ oldMessages, auth, updateMessages }) => {
         oldMessages.forEach((message) => {
             if (message.sender_id && message.receiver_id) {
                 if (message.sender_id === currentSender && message.receiver_id === currentReceiver) {
-                    // console.log({mergedMessages});
-                    // mergedMessage.messages.push(message);
-                    // setMergedMessages((prevState) => {
-                    //     prevState.messages.push(message);
-                    // });
+                    mergedMessage.messages.push(message);
+
+                    mergedMessage.messages.push({
+                        created_at: "2023-06-11T13:56:58.000000Z",
+                        id: 999,
+                        message: "For Testing Only",
+                        receiver_id: 1,
+                        sender_id: 4,
+                        updated_at: "2023-06-11T13:56:58.000000Z"
+                    });
                 } else {
                     // Create a new merged message
                     mergedMessage = {
@@ -126,7 +123,6 @@ const ChatContent = ({ oldMessages, auth, updateMessages }) => {
                     };
 
                     mergedMessages.push(mergedMessage);
-                    // setMergedMessages((prevState) => [...prevState, message]);
 
                     // Update current sender and receiver
                     currentSender = message.sender_id;
@@ -136,19 +132,8 @@ const ChatContent = ({ oldMessages, auth, updateMessages }) => {
         });
     };
 
-    // useEffect(() => {
-    //     console.log({newMessage});
-    //     setMergedMessages(prevState => {
-    //         console.log({prevState});
-    //         // prevState.messages.push(newMessage);
-    //         // console.log({prevState});
-    //         return prevState;
-    //     });
-    // }, [newMessage]);
-
     return (
         <div className="w-full bg-white flex flex-col pt-[12px] pb-[25px] rounded-lg">
-            <h1>Test: {doanTest.length}</h1>
             {/* Chat content */}
             {/* Header */}
             <div className="flex items-center justify-between bg-gray-200 h-[115px] pl-[35px] rounded-tl-xl rounded-tr-xl ">
