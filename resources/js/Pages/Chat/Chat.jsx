@@ -21,13 +21,12 @@ export default function Chat(props) {
         // console.log('Old Messages:', oldMessages);
         // Add new message to old-messages
         setOldMessages((prevState) => [...prevState, newMessage]);
-
         // Add new message to recent messages
         // dua tren cai receiver_id, de ma update dung cai thang do thoi
         setRecentMessages((prevState) => {
             return prevState.map((message) => {
-                if (message.user_id === newMessage.id) {
-                    return newMessage;
+                if (message.user_id === newMessage.receiver_id) {
+                    return { ...message, message: newMessage.message, created_at: newMessage.created_at };
                 } else {
                     return message;
                 }

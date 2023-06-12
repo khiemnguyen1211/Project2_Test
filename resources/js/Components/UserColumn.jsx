@@ -6,6 +6,9 @@ export default function UserColumn  ( {recentMessages,auth} ) {
         const formattedTime = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Bangkok' });
         return formattedTime;
     };
+    useEffect(() => {
+        console.log('recentMessages:', recentMessages);
+    }, [recentMessages]);
 
     return (
         <div className="w-full md:w-[442px] bg-white">

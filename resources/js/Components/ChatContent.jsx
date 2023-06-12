@@ -1,7 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
 import axios from 'axios';
-import echo from "@/Components/echo.jsx";
-import useWebSocket from "react-use-websocket";
 
 const ChatContent = ({ oldMessages, auth, updateMessages }) => {
     console.log('ChatContent re-render');

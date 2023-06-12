@@ -17,6 +17,13 @@ class ChatRepository
             ->get();
     }
 
+//    public function getFriends(int $user_id)
+//    {
+//        return friendTable::whereIn('user_id', [$senderId, $receiverId])
+//            ->whereIn('receiver_id', [$senderId, $receiverId])
+//            ->get();
+//    }
+
     public function getRecentUsersWithMessage(int $senderId) : array {
         DB::statement("SET SESSION sql_mode=''");
 //        $recentMessages = Message::where(function ($query) use ($senderId) {
