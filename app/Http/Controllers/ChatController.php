@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Events\MessageSent;
 use App\Repositories\ChatRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
 
